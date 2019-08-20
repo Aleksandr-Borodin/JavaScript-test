@@ -37,4 +37,25 @@ var d = new A2();
 d.colors.push("red", "black");	// изменения коснутся и других об. кл., поскольку массив colors принадлежит прототипу A1;
 
 var c = new A2();
-alert(c.colors);
+//alert(c.colors);
+
+// Использование паттерна Кража конструктора для исправления общего исопльзования св. протипа объектами класса
+function B1() {
+  this.colors = ["t1", "t2"];
+}
+function B2 () {
+  B1.call(this);
+}
+
+var dub = new B2();
+dub.colors.push("t3", "t4");
+
+var dub2 = new B2();
+alert(dub.colors);
+alert(dub2.colors);
+
+
+
+
+
+
