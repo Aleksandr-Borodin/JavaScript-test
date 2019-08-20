@@ -51,8 +51,32 @@ var dub = new B2();
 dub.colors.push("t3", "t4");
 
 var dub2 = new B2();
-alert(dub.colors);
-alert(dub2.colors);
+//alert(dub.colors);
+//alert(dub2.colors);
+
+
+// Комбинированное наследование
+function D1(name) {
+  this.name = name;
+  this.colors = ["d1", "d2"];
+}
+D1.prototype.SayName = function() {
+  alert(this.name);
+};
+
+function D2 (name) {
+  D1.call(this, name);	// наследование свойств
+}
+D2.prototype = new D1();
+
+var hub = new D2("Sasha");
+hub.colors.push("d3", "d4");
+alert(hub.colors);
+
+var hub2 = new D2("Jamie");
+hub2.SayName();
+alert(hub2.colors);
+
 
 
 
