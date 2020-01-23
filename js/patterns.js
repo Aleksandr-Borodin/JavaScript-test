@@ -58,6 +58,7 @@ var b5 = Dest('text3');
 
 // Прототипное наследование
 var b6 = Object(b5, b4);
+//alert(Object.getOwnPropertyNames(b6));
 
 
 // Паразитное наследование
@@ -125,22 +126,18 @@ var hub2 = new D2("Jamie");
 
 
 // Паразитное комбинированное наследование
-function C1(a) {
-  this.a1 = a;
+function Polygon(sides){
+ this.sides = sides;
+}  
+function Rectangle(width, height, sides){
+  Polygon.call(this, sides);  
+  this.width = width;
+  this.height = height;
 }
-C1.prototype.submarrine = function(){};
+Rectangle.prototype = new Polygon();
 
-function C2(a) {
-  C1.call(this, a); // 2-й вызов
-  this.a2 = a + ' text';
-}
-C2.prototype = new C1();  // 1-й вызов
-C2.prototype.constructor = C2;
-
-var b8 = Object(C2.prototype);
-b8.constructor = C1;
-C1.prototype = b8;
-//alert(Object.getOwnPropertyNames(b8));
+var rect = new Rectangle(5, 10, 2);
+//alert(rect.sides);
 
 
 // Модуль - Синглтон в php
@@ -152,3 +149,13 @@ var v = function(){
   };
 }();
 //alert(v.a1);
+
+
+class Rabbit extends Object{
+  constructor(name) {
+    super();
+    this.name = name;
+  }
+}
+let rabbit = new Rabbit("Rab");
+alert(rabbit.name);
