@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel = "stylesheet" href = "style/main.css">
+  <meta http-equiv = "content-type" content = "text/html; charset=utf-8">
+  <title>Post Message</title>  
+  <script src="library/jquery-3.4.1.js"></script>
+</head>
+<body>
+<h3>Обмен сообщенимями документами</p>
+<form class="send-message">
+  <input type="text" placeholder="Текст для отправки в другой документ">
+  <br>
+  <input type="submit" value="Отправить">
+</form>
+ <iframe src="post-message2.html" width="400" height="400" id="main-frame"></iframe>
+<script>
+var a = document.getElementById("main-frame").contentWindow;
+$(".send-message").submit(function(event) {
+  event.preventDefault();
+  var b = $(".send-message input:text").prop('value');
+  
+  a.postMessage(b, "http://localhost");
+  
+  a.addEventListener("message", function(){
+    // Использование js
+    event = arguments[0];
+    this.document.write('<p>' + event.data + '</p>');
+  });
+});
+
+
+
+
+
+
+ // обробник події для поточної сторінки
+ /*
+window.onmessage=function(event){
+alert(event.data);
+};
+
+//отримуємо нове вікно
+var w=open('about:blank','test');
+//обробник події onmesage для новоствореного вікна
+w.onmessage=function(m){
+this.document.write('<p>origin: '+m.origin+'</p>');
+ this.document.write('<p>data: '+m.data+'</p>');
+ this.document.write('<p>source: '+m.source+'</p>');
+ //відправляємо відповідь
+ m.source.postMessage('відповідь', '*');
+}
+w.postMessage('test message', '*'); 
+*/
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
