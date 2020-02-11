@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel = "stylesheet" href = "style/main.css">
+  <meta http-equiv = "content-type" content = "text/html; charset=utf-8">
+  <title>Exchange</title>  
+</head>
+<body>
+<button class="but-post">Запросить данные методом Post</button>
+<br>
+<button class="but-get">Запросить данные методом Get</button>
+<br>
+<button class="but-post-non-data">Запросить данные методом Post, без данных</button>
+<br>
+<button class="but-get-non-data">Запросить данные методом Get, без данных</button>
+<br>
+<button class="but-load">Запросить данные методом jQuery.load</button>
+<br>
+<button class="but-ajax">Запросить данные методом jQuery.ajax</button>
+<h4>Результаты запроса:</h4>
+<p class="result"><p>
+<script src="library/jquery-3.4.1.js"></script>
+<script>
+// Разные типы запросов с помощью методов jQuery:
+$(".but-post").on('click', function() {
+  $.post( "php/exchange.php", {pole1: 'data'}, function( data ) {
+  $(".result").html( data );
+});
+});
+$(".but-get").on('click', function() {
+  $.get( "php/exchange.php?pole1=data1", function( data ) {
+    $( ".result" ).html( data );
+  });
+});
+$(".but-post-non-data").on('click', function() {
+  $.post( "php/exchange.php", function( data ) {
+  $(".result").html( data );
+  });
+});
+$(".but-get-non-data").on('click', function() {
+  $.get( "php/exchange.php", function( data ) {
+  $( ".result" ).html( data );
+  });
+});
+$(".but-load").on('click', function() {
+  $(".result").load( "php/exchange.php", {name: 'Aleksandr'});
+});
+$(".but-ajax").on('click', function() {
+  // Использование промисов
+  /*$.ajax( "php/exchange.php" )
+  .done(function() {
+    $(".result").text("Успешно завершен запрос");
+  })
+  .fail(function() {
+    $(".result").text("Ошибка запроса");
+  })
+  .always(function() {
+    $(".result").text($(".result").text() + " " + "Запрос завершен");
+  });*/
+  
+  // Использование об. PlainObject
+  function show_must(data) {
+    $( ".result" ).html( data );
+  }
+  // Но метод передачи, по умолчанию, Get
+  $.ajax( "php/exchange.php", {data: {name: 'Vasilii'}, success: show_must}); 
+  
+});
+</script>
+</body>
+</html>
