@@ -13,45 +13,55 @@
   <br>
   <input type="submit" value="Отправить">
 </form>
- <iframe src="post-message2.html" width="400" height="400" id="main-frame"></iframe>
+<br>
+<input class="worker" type="submit" value="Запустить рабочий веб-поток">
+<p class="parag"></p>
+
+<!--<iframe src="post-message2.html" width="400" height="400" id="main-frame"></iframe>-->
+ 
 <script>
-var a = document.getElementById("main-frame").contentWindow;
+//var a = document.getElementById("main-frame").contentWindow;
 $(".send-message").submit(function(event) {
   event.preventDefault();
+  
+  // Открытие нового окна
+  var c = window.open("about:blank", "Назойливое окно");  
   var b = $(".send-message input:text").prop('value');
+  c.postMessage(b, "http://localhost");
+  c.addEventListener("message", function(){
+    // Использование js
+    event = arguments[0];
+    this.document.write('<p>' + event.data + '</p>');
+    
+    // Отправить сообщение обратно
+    event.source.postMessage("сообщение получено", "http://localhost")
+  });
   
+  // Получение сообщения от созданного окна
+  window.addEventListener("message", function(){
+    // Использование js
+    event = arguments[0];
+    $(".parag").text(event.data);
+  }); 
+  
+  /*
   a.postMessage(b, "http://localhost");
-  
   a.addEventListener("message", function(){
     // Использование js
     event = arguments[0];
     this.document.write('<p>' + event.data + '</p>');
   });
+  */  
 });
 
-
-
-
-
-
- // обробник події для поточної сторінки
- /*
-window.onmessage=function(event){
-alert(event.data);
-};
-
-//отримуємо нове вікно
-var w=open('about:blank','test');
-//обробник події onmesage для новоствореного вікна
-w.onmessage=function(m){
-this.document.write('<p>origin: '+m.origin+'</p>');
- this.document.write('<p>data: '+m.data+'</p>');
- this.document.write('<p>source: '+m.source+'</p>');
- //відправляємо відповідь
- m.source.postMessage('відповідь', '*');
-}
-w.postMessage('test message', '*'); 
-*/
+// Рабочий веб-поток
+  var worker = new Worker("js/worker.js");
+$(".worker").click(function(event) {
+  worker.postMessage('информация для потока');
+});
+worker.addEventListener("message", function(e){
+  $(".parag").text(e.data);
+});
 </script>
 </body>
 </html>
